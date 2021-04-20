@@ -22,13 +22,50 @@ for (let i = 0; i < addCardBtn.length; i++) {
 }
 function addCart(e) {
   // console.log(1);
+
   e.preventDefault();
-  // console.log(e.target.dataset.id);
+  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+  .then(function (response) {
+    // 成功會回傳的內容
+    // console.log(response.data.carts);
+    //   console.log("成功");
+    let cartObj ={};
+    response.data.carts.forEach(function (item,i) {
+
+      // console.log(item.id);
+      // console.log(item.quantity);
+      cartObj[item.product.id] =item.quantity;
+    })
+// console.log(cartObj)
+// console.log(e.target.dataset.id);
+if(cartObj[e.target.dataset.id]==undefined){
+  // console.log(685681)
   axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
     {
       "data": {
         "productId": `${e.target.dataset.id}`,
         "quantity": 1
+      }
+    })
+    .then(function (response) {
+      // 成功會回傳的內容
+      // console.log(response.data)
+      alert("已加入購物車!")
+
+      showShppingCar();
+    }).catch(function (error) {
+      // 失敗會回傳的內容
+      console.log(error);
+    })
+}else{
+  // console.log(1234)
+  // console.log(cartObj[e.target.dataset.id])
+  let itemNum = cartObj[e.target.dataset.id];
+  axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+    {
+      "data": {
+        "productId": `${e.target.dataset.id}`,
+        "quantity": itemNum+1
       }
     })
     .then(function (response) {
@@ -41,7 +78,20 @@ function addCart(e) {
       // 失敗會回傳的內容
       console.log(error);
     })
+}
 
+    
+
+
+  })
+  .catch(function (error) {
+    // 失敗會回傳的內容
+    console.log(error);
+  })
+  // console.log(e.target.dataset.id);
+
+
+  
 };
 
 
@@ -78,7 +128,7 @@ function showShppingCar() {
     </div>
 </td>
 <td>NT$${item.product.price}</td>
-<td>1</td>
+<td><input class="inputNumber" type="number" value="${item.quantity}"></td>
 <td>NT$${item.product.price}</td>
 <td class="discardBtn" >
     <a href="#" id="deleteSomeOne${i}" class="material-icons " data-id-clear='${item.id}'>
@@ -260,3 +310,7 @@ function addOrder(e) {
 
 
 }
+
+
+
+

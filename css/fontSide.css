@@ -833,3 +833,28 @@ body {
 .orderTableWrap::-webkit-scrollbar {
   display: none;
 }
+
+.inputNumber{
+  width: 60px;
+}
+
+.animate{
+  position: relative;
+  left:-10%;
+  animation: move 10s infinite reverse;/*infinite：无限运行。reverse：反转*/
+  animation-timing-function:linear;/*匀速*/
+  animation-delay:0s;/*启动延迟*/
+}
+@keyframes move
+      {
+          0%{
+              /* transform: translateX(+100%); */
+              left:-100%;
+          }
+          
+          100%{
+              /* transform: translateX(100%); */
+              left:100%;
+          }
+      }
+

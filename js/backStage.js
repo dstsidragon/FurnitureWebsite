@@ -5,13 +5,7 @@ function c3js(arr){
         bindto: '#chart', // HTML 元素綁定
         data: {
             columns: arr,
-            type: "donut",
-            colors: {
-                c3Top1: "#DACBFF",
-                c3Top2: "#9D7FEA",
-                c3Top3: "#5434A7",
-                c3Top4: "#301E5F"
-            }
+            type: "donut"
             
         },
         donut: {
@@ -102,9 +96,26 @@ function showBackStageList() {
                 return a[1] > b[1] ? 1 : -1;
             });
 
+            //判斷訂單資料筆數 
+            
+            let c3Ary = [];
+            if(sortAry.length<4){
+                
             // console.log(sortAry)
             //前三的資料
-            let c3Ary = [];
+           
+            for (let i = 0; i < sortAry.length; i++) {
+                let top3Ary = [];
+                top3Ary.push(Object.keys(sortAry[i])[0]);
+                top3Ary.push(Object.values(sortAry[i])[0]);
+                c3Ary.push(top3Ary);
+            }
+            // console.log(c3Ary)
+
+            }else{
+                
+            // console.log(sortAry)
+            //前三的資料
             for (let i = 0; i < 3; i++) {
                 let top3Ary = [];
                 // console.log(Object.keys(sortAry[i])[0]);
@@ -113,7 +124,7 @@ function showBackStageList() {
                 top3Ary.push(Object.values(sortAry[i])[0]);
                 c3Ary.push(top3Ary);
             }
-            // console.log(c3Ary)
+            console.log(c3Ary)
             //PUSH 其他
             let anotherAry = [];
             let anotherTotal =0;
@@ -129,6 +140,7 @@ function showBackStageList() {
             c3Ary.push(anotherAry);
             // console.log(c3Ary[0][0])
 
+            };
             response.data.orders.forEach(function (item, i) {
                 // console.log(item);
                 let orderStatus = "";
