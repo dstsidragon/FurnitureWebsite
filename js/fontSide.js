@@ -4,22 +4,43 @@ const myCartList = document.getElementById("myCartList");
 
 //初始化
 function init() {
+  showProduct();
   showShppingCar();
-
 };
 init();
 
+//產生產品
+const productWrap = document.getElementById("productWrap");
+function showProduct(){
+  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
+  .then(function (response) {
+    // console.log('資料有回傳了');  
+    // console.log(response.data.products);
+    sStr="";
+    response.data.products.forEach(function (item, i){
+      // console.log(item);
+      sStr +=`<li class="productCard">
+      <h4 class="productType">新品</h4>
+      <img src="${item.images}" alt="">
+      <a href="#" id="addCardBtn${i}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
+      <h3>${item.title}</h3>
+      <del class="originPrice">NT$${item.origin_price}</del>
+      <p class="nowPrice">NT$${item.price}</p>
+  </li>`;
+    });
+
+  productWrap.innerHTML=sStr;
+    
+  //動態賦予新增商品事件
+  response.data.products.forEach(function (item, i){
+    document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
+  });
+  });
+};
 
 
 //新增商品至購物車 
-const addCardBtn = document.getElementsByClassName("addCardBtn");
-// console.log(addCardBtn);
-// console.log( addCardBtn.length)
 
-for (let i = 0; i < addCardBtn.length; i++) {
-  // console.log(1);
-  addCardBtn[i].addEventListener('click', addCart, false)
-}
 function addCart(e) {
   // console.log(1);
 
@@ -70,7 +91,7 @@ if(cartObj[e.target.dataset.id]==undefined){
     })
     .then(function (response) {
       // 成功會回傳的內容
-      console.log(response.data)
+      // console.log(response.data)
       alert("已加入購物車!")
 
       showShppingCar();
@@ -93,7 +114,80 @@ if(cartObj[e.target.dataset.id]==undefined){
 
   
 };
+//  切換產品下拉選單
+const productSelect = document.getElementById("productSelect");
+productSelect.addEventListener("change",chgProduct,false)
+function chgProduct(e){
+  // console.log(e.target.value)
+  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
+  .then(function (response) {
+    // console.log('資料有回傳了');  
+    // console.log(response.data.products);
+    sStr="";
+let j=0;
+    response.data.products.forEach(function (item, i){
+      // console.log(item);
+      // console.log(item.category);
 
+      if(e.target.value =="全部"){
+        sStr +=`<li class="productCard">
+      <h4 class="productType">新品</h4>
+      <img src="${item.images}" alt="">
+      <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
+      <h3>${item.title}</h3>
+      <del class="originPrice">NT$${item.origin_price}</del>
+      <p class="nowPrice">NT$${item.price}</p>
+  </li>`;
+  j++;
+      }else if(e.target.value=="床架"){
+        if(item.category =="床架"){
+          sStr +=`<li class="productCard">
+      <h4 class="productType">新品</h4>
+      <img src="${item.images}" alt="">
+      <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
+      <h3>${item.title}</h3>
+      <del class="originPrice">NT$${item.origin_price}</del>
+      <p class="nowPrice">NT$${item.price}</p>
+  </li>`;
+  j++;
+        }
+      }else if(e.target.value =="窗簾"){
+        if(item.category =="窗簾"){
+          sStr +=`<li class="productCard">
+      <h4 class="productType">新品</h4>
+      <img src="${item.images}" alt="">
+      <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
+      <h3>${item.title}</h3>
+      <del class="originPrice">NT$${item.origin_price}</del>
+      <p class="nowPrice">NT$${item.price}</p>
+  </li>`;
+  j++;
+        }
+      }else if(e.target.value =="收納"){
+      if(item.category =="收納"){
+        sStr +=`<li class="productCard">
+    <h4 class="productType">新品</h4>
+    <img src="${item.images}" alt="">
+    <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
+    <h3>${item.title}</h3>
+    <del class="originPrice">NT$${item.origin_price}</del>
+    <p class="nowPrice">NT$${item.price}</p>
+</li>`;
+j++;
+      }}
+      
+    });
+  productWrap.innerHTML=sStr;
+  const chgDownProduct = document.querySelectorAll(".productCard a");
+//  console.log(chgDownProduct)
+
+  //動態賦予新增商品事件
+  chgDownProduct.forEach(function (item, i){
+    // console.log(1)
+    document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
+  });
+})
+};
 
 //取得購物車 顯示在畫面
 let cartItem = 0;
@@ -103,7 +197,8 @@ function showShppingCar() {
       // 成功會回傳的內容
       // console.log(response.data.carts);
       //   console.log("成功");
-
+      cartResponse=response;
+      // console.log(cartResponse)
       sStr = ` <tr>
   <th width="40%">品項</th>
   <th width="15%">單價</th>
