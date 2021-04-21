@@ -2,19 +2,8 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,8 +13,8 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
@@ -41,8 +30,7 @@ blockquote, q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before, blockquote:after, q:before, q:after {
   content: '';
   content: none;
 }
@@ -54,7 +42,7 @@ table {
 
 *, *::after, *::before {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-transition: all .2s;
   transition: all .2s;
 }
@@ -79,8 +67,12 @@ body {
 }
 
 .topBar {
-  border-bottom: 40px solid #000000;
-  margin-bottom: 30px;
+  border-bottom: 2px solid #000000;
+  position:fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
 }
 
 .topBar .wrap {
@@ -89,13 +81,13 @@ body {
   display: flex;
   position: relative;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1110px) {
@@ -114,7 +106,7 @@ body {
 .topBar a:hover {
   color: #6A33F8;
   -webkit-transform: scale(1.05);
-          transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .topBar-menu {
@@ -122,7 +114,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   background-color: #FFFFFF;
 }
 
@@ -134,10 +126,15 @@ body {
   padding: 36px 24px;
   background-color: #FFFFFF;
 }
+@media (max-width: 800px) {
+  .topBar-menu a {
+    padding: 36px 12px;
+  }
+}
 
 .topBar-menu a:hover {
   -webkit-transform: scale(1);
-          transform: scale(1);
+  transform: scale(1);
 }
 
 .topBar-menu li:last-child a {
@@ -806,4 +803,36 @@ body {
 
 .orderTableWrap::-webkit-scrollbar {
   display: none;
+}
+
+.mt_102{
+  margin-top: 102px;
+}
+
+
+.footer{
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100px;
+}
+@media (max-width: 767px) {
+  .footer-inf{
+   display:none;
+  }
+  
+}
+.logo-footer{
+  display: block;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.material-icons{
+  text-decoration: none;
+  
+}
+.appIcon{
+  margin-right: 10px;
 }
