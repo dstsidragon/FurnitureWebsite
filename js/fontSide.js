@@ -11,15 +11,15 @@ init();
 
 //產生產品
 const productWrap = document.getElementById("productWrap");
-function showProduct(){
+function showProduct() {
   axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
-  .then(function (response) {
-    // console.log('資料有回傳了');  
-    // console.log(response.data.products);
-    sStr="";
-    response.data.products.forEach(function (item, i){
-      // console.log(item);
-      sStr +=`<li class="productCard">
+    .then(function (response) {
+      // console.log('資料有回傳了');  
+      // console.log(response.data.products);
+      sStr = "";
+      response.data.products.forEach(function (item, i) {
+        // console.log(item);
+        sStr += `<li class="productCard">
       <h4 class="productType">新品</h4>
       <img src="${item.images}" alt="">
       <a href="#" id="addCardBtn${i}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
@@ -27,15 +27,15 @@ function showProduct(){
       <del class="originPrice">NT$${item.origin_price}</del>
       <p class="nowPrice">NT$${item.price}</p>
   </li>`;
-    });
+      });
 
-  productWrap.innerHTML=sStr;
-    
-  //動態賦予新增商品事件
-  response.data.products.forEach(function (item, i){
-    document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
-  });
-  });
+      productWrap.innerHTML = sStr;
+
+      //動態賦予新增商品事件
+      response.data.products.forEach(function (item, i) {
+        document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
+      });
+    });
 };
 
 
@@ -46,91 +46,91 @@ function addCart(e) {
 
   e.preventDefault();
   axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
-  .then(function (response) {
-    // 成功會回傳的內容
-    // console.log(response.data.carts);
-    //   console.log("成功");
-    let cartObj ={};
-    response.data.carts.forEach(function (item,i) {
-
-      // console.log(item.id);
-      // console.log(item.quantity);
-      cartObj[item.product.id] =item.quantity;
-    })
-// console.log(cartObj)
-// console.log(e.target.dataset.id);
-if(cartObj[e.target.dataset.id]==undefined){
-  // console.log(685681)
-  axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
-    {
-      "data": {
-        "productId": `${e.target.dataset.id}`,
-        "quantity": 1
-      }
-    })
     .then(function (response) {
       // 成功會回傳的內容
-      // console.log(response.data)
-      alert("已加入購物車!")
+      // console.log(response.data.carts);
+      //   console.log("成功");
+      let cartObj = {};
+      response.data.carts.forEach(function (item, i) {
 
-      showShppingCar();
-    }).catch(function (error) {
+        // console.log(item.id);
+        // console.log(item.quantity);
+        cartObj[item.product.id] = item.quantity;
+      })
+      // console.log(cartObj)
+      // console.log(e.target.dataset.id);
+      if (cartObj[e.target.dataset.id] == undefined) {
+        // console.log(685681)
+        axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+          {
+            "data": {
+              "productId": `${e.target.dataset.id}`,
+              "quantity": 1
+            }
+          })
+          .then(function (response) {
+            // 成功會回傳的內容
+            // console.log(response.data)
+            alert("已加入購物車!")
+
+            showShppingCar();
+          }).catch(function (error) {
+            // 失敗會回傳的內容
+            console.log(error);
+          })
+      } else {
+        // console.log(1234)
+        // console.log(cartObj[e.target.dataset.id])
+        let itemNum = cartObj[e.target.dataset.id];
+        axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+          {
+            "data": {
+              "productId": `${e.target.dataset.id}`,
+              "quantity": itemNum + 1
+            }
+          })
+          .then(function (response) {
+            // 成功會回傳的內容
+            // console.log(response.data)
+            alert("已加入購物車!")
+
+            showShppingCar();
+          }).catch(function (error) {
+            // 失敗會回傳的內容
+            console.log(error);
+          })
+      }
+
+
+
+
+    })
+    .catch(function (error) {
       // 失敗會回傳的內容
       console.log(error);
     })
-}else{
-  // console.log(1234)
-  // console.log(cartObj[e.target.dataset.id])
-  let itemNum = cartObj[e.target.dataset.id];
-  axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
-    {
-      "data": {
-        "productId": `${e.target.dataset.id}`,
-        "quantity": itemNum+1
-      }
-    })
-    .then(function (response) {
-      // 成功會回傳的內容
-      // console.log(response.data)
-      alert("已加入購物車!")
-
-      showShppingCar();
-    }).catch(function (error) {
-      // 失敗會回傳的內容
-      console.log(error);
-    })
-}
-
-    
-
-
-  })
-  .catch(function (error) {
-    // 失敗會回傳的內容
-    console.log(error);
-  })
   // console.log(e.target.dataset.id);
 
 
-  
+
 };
 //  切換產品下拉選單
 const productSelect = document.getElementById("productSelect");
-productSelect.addEventListener("change",chgProduct,false)
-function chgProduct(e){
+productSelect.addEventListener("change", chgProduct, false)
+function chgProduct(e) {
   // console.log(e.target.value)
   axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
-  .then(function (response) {
-    // console.log('資料有回傳了');  
-    // console.log(response.data.products);
-    sStr="";
-let j=0;
-    response.data.products.forEach(function (item, i){
-      // console.log(item);
-      // console.log(item.category);
+    .then(function (response) {
+      // console.log('資料有回傳了');  
+      // console.log(response.data.products);
+      sStr = "";
+      let j = 0;
+      response.data.products.forEach(function (item, i) {
+        // console.log(item);
+        // console.log(item.category);
 
-      if(e.target.value =="全部"){
-        sStr +=`<li class="productCard">
+        if (e.target.value == "全部") {
+          sStr += `<li class="productCard">
       <h4 class="productType">新品</h4>
       <img src="${item.images}" alt="">
       <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
@@ -138,10 +138,10 @@ let j=0;
       <del class="originPrice">NT$${item.origin_price}</del>
       <p class="nowPrice">NT$${item.price}</p>
   </li>`;
-  j++;
-      }else if(e.target.value=="床架"){
-        if(item.category =="床架"){
-          sStr +=`<li class="productCard">
+          j++;
+        } else if (e.target.value == "床架") {
+          if (item.category == "床架") {
+            sStr += `<li class="productCard">
       <h4 class="productType">新品</h4>
       <img src="${item.images}" alt="">
       <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
@@ -149,11 +149,11 @@ let j=0;
       <del class="originPrice">NT$${item.origin_price}</del>
       <p class="nowPrice">NT$${item.price}</p>
   </li>`;
-  j++;
-        }
-      }else if(e.target.value =="窗簾"){
-        if(item.category =="窗簾"){
-          sStr +=`<li class="productCard">
+            j++;
+          }
+        } else if (e.target.value == "窗簾") {
+          if (item.category == "窗簾") {
+            sStr += `<li class="productCard">
       <h4 class="productType">新品</h4>
       <img src="${item.images}" alt="">
       <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
@@ -161,11 +161,11 @@ let j=0;
       <del class="originPrice">NT$${item.origin_price}</del>
       <p class="nowPrice">NT$${item.price}</p>
   </li>`;
-  j++;
-        }
-      }else if(e.target.value =="收納"){
-      if(item.category =="收納"){
-        sStr +=`<li class="productCard">
+            j++;
+          }
+        } else if (e.target.value == "收納") {
+          if (item.category == "收納") {
+            sStr += `<li class="productCard">
     <h4 class="productType">新品</h4>
     <img src="${item.images}" alt="">
     <a href="#" id="addCardBtn${j}" class="addCardBtn" data-id="${item.id}" >加入購物車</a>
@@ -173,20 +173,21 @@ let j=0;
     <del class="originPrice">NT$${item.origin_price}</del>
     <p class="nowPrice">NT$${item.price}</p>
 </li>`;
-j++;
-      }}
-      
-    });
-  productWrap.innerHTML=sStr;
-  const chgDownProduct = document.querySelectorAll(".productCard a");
-//  console.log(chgDownProduct)
+            j++;
+          }
+        }
 
-  //動態賦予新增商品事件
-  chgDownProduct.forEach(function (item, i){
-    // console.log(1)
-    document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
-  });
-})
+      });
+      productWrap.innerHTML = sStr;
+      const chgDownProduct = document.querySelectorAll(".productCard a");
+      //  console.log(chgDownProduct)
+
+      //動態賦予新增商品事件
+      chgDownProduct.forEach(function (item, i) {
+        // console.log(1)
+        document.getElementById(`addCardBtn${i}`).addEventListener('click', addCart, false)
+      });
+    })
 };
 
 //取得購物車 顯示在畫面
@@ -197,7 +198,7 @@ function showShppingCar() {
       // 成功會回傳的內容
       // console.log(response.data.carts);
       //   console.log("成功");
-      cartResponse=response;
+      cartResponse = response;
       // console.log(cartResponse)
       sStr = ` <tr>
   <th width="40%">品項</th>
@@ -223,7 +224,7 @@ function showShppingCar() {
     </div>
 </td>
 <td>NT$${item.product.price}</td>
-<td><input class="inputNumber" type="number" value="${item.quantity}"></td>
+<td><input id="inputNumber${i}" class="inputNumber" type="number" data-id-modi='${item.id}' value="${item.quantity}"></td>
 <td>NT$${item.product.price}</td>
 <td class="discardBtn" >
     <a href="#" id="deleteSomeOne${i}" class="material-icons " data-id-clear='${item.id}'>
@@ -231,9 +232,9 @@ function showShppingCar() {
     </a>
 </td>
 </tr>`;
-        // console.log(item.id)
+        // console.log(response.data)
         //加總金額
-        cartListPrice += item.product.price;
+        cartListPrice = response.data.finalTotal;
         //紀錄筆數
         cartItem += 1;
       })
@@ -257,7 +258,7 @@ function showShppingCar() {
       myCartList.innerHTML += sStr;
 
 
-      actDelListen();
+      actListen();
       //刪除購物車全部商品
       let discardAllBtn = document.getElementById("discardAllBtn");
       discardAllBtn.addEventListener('click', delAllCart, false);
@@ -274,10 +275,12 @@ function showShppingCar() {
 //刪除購物車單件商品 
 
 //動態賦予監聽事件
-function actDelListen() {
+function actListen() {
   for (let i = 0; i < cartItem; i++) {
 
-    document.getElementById(`deleteSomeOne${i}`).addEventListener('click', deloneCart, false)
+    document.getElementById(`inputNumber${i}`).addEventListener('change', chgInputNumber, false);
+    document.getElementById(`inputNumber${i}`).addEventListener('keypress', chgInputNumber, false);
+    document.getElementById(`deleteSomeOne${i}`).addEventListener('click', deloneCart, false);
   }
 
 }
@@ -353,8 +356,8 @@ function addOrder(e) {
   // console.log(telVal);
   // console.log(emailVal);
   // console.log(addressVal);
-  let Today=new Date();
-// console.log(Today)
+  let Today = new Date();
+  // console.log(Today)
 
   if (nameVal == "" || telVal == "" || emailVal == "" || addressVal == "") {
     alert("必填資料不得為空!!")
@@ -376,13 +379,13 @@ function addOrder(e) {
                   "address": `${addressVal}`,
                   "payment": `${nameVal}`,
                   // "date":`${ Today.getFullYear()}`+"/"+`${ (Today.getMonth()+1)}`+"/"+`${ Today.getDate() }`
-                  "date":`${ Today.getFullYear()}/${ (Today.getMonth()+1)}/${ Today.getDate() }`
+                  "date": `${Today.getFullYear()}/${(Today.getMonth() + 1)}/${Today.getDate()}`
                 }
               }
             })
             .then(function (response) {
               // 成功會回傳的內容
-              console.log(response.data)
+              // console.log(response.data)
               alert("已送出訂單資料!")
               orderForm.reset();
               showShppingCar();
@@ -407,37 +410,65 @@ function addOrder(e) {
 }
 
 
+//改變訂單數量
+function chgInputNumber(e) {
+  // console.log(typeof e.target.value);
+  const modiNum =parseInt(e.target.value);
+  const modiId = e.target.dataset.idModi;
+  // console.log(modiId);
+  // //修改伺服器資料
+  axios.patch(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+  {
+    "data": {
+      "id": modiId,
+      "quantity": modiNum,
+    }
+  },
+  {
+      headers: {
+          'Authorization': token
+      }
+  }).then(function (response) {
+      showShppingCar();
+      //  console.log("成功")
+    }).catch(function (error) {
+      // 失敗會回傳的內容
+      console.log(error);
+    })
+
+
+};
+
 
 //back to top
 $(function () {
 
   var $win = $(window);
-  
+
   var $backToTop = $('.js-back-to-top');
-  
+
   // 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
-  
+
   $win.scroll(function () {
-  
-  if ($win.scrollTop() > 100) {
-  
-  $backToTop.show();
-  
-  } else {
-  
-  $backToTop.hide();
-  
-  }
-  
+
+    if ($win.scrollTop() > 100) {
+
+      $backToTop.show();
+
+    } else {
+
+      $backToTop.hide();
+
+    }
+
   });
-  
+
   // 當用戶點擊按鈕時，通過動畫效果返回頭部
-  
+
   $backToTop.click(function () {
-  
-  $('html, body').animate({scrollTop: 0}, 200);
-  
+
+    $('html, body').animate({ scrollTop: 0 }, 200);
+
   });
-  
-  });
-  
+
+});
