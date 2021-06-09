@@ -39,7 +39,7 @@ function showBackStageList() {
       </tr>
   </thead>`;
     //取得伺服器訂單資料
-    axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders`,
+    axios.get(`${api_url}/api/livejs/v1/admin/${pathApi}/orders`,
         {
             headers: {
                 'Authorization': token
@@ -198,7 +198,7 @@ function delSoneOneOrder() {
     // console.log(this.dataset);
     // console.log(this.dataset.orderid);
     const orderId = this.dataset.orderid;
-    axios.delete(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders/${orderId}`, {
+    axios.delete(`${api_url}/api/livejs/v1/admin/${pathApi}/orders/${orderId}`, {
 
         headers: {
             'Authorization': token
@@ -220,7 +220,7 @@ discardAllBtn.addEventListener("click", delAllOrder, false);
 function delAllOrder(e) {
     e.preventDefault();
     //取得伺服器訂單資料
-    axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders`,
+    axios.get(`${api_url}/api/livejs/v1/admin/${pathApi}/orders`,
         {
             headers: {
                 'Authorization': token
@@ -230,7 +230,7 @@ function delAllOrder(e) {
             // console.log(response);
             //    console.log(response.data.orders.length);
             if (response.data.orders.length == 0) { alert("沒有訂單資料!") } else {
-                axios.delete(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders/`, {
+                axios.delete(`${api_url}/api/livejs/v1/admin/${pathApi}/orders/`, {
                     headers: {
                         'Authorization': token
                     }
@@ -261,7 +261,7 @@ function mdiSoneOneOrder(e) {
     // console.log(orderId)
     // console.log(orderNumber)
     //取得伺服器訂單資料
-    axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders`,
+    axios.get(`${api_url}/api/livejs/v1/admin/${pathApi}/orders`,
         {
             headers: {
                 'Authorization': token
@@ -276,7 +276,7 @@ function mdiSoneOneOrder(e) {
 
 
             //修改伺服器資料
-            axios.put(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/admin/${pathApi}/orders`,
+            axios.put(`${api_url}/api/livejs/v1/admin/${pathApi}/orders`,
                 {
                     "data": {
                         "id": orderId,

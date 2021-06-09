@@ -12,7 +12,7 @@ init();
 //產生產品
 const productWrap = document.getElementById("productWrap");
 function showProduct() {
-  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
+  axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/products`)
     .then(function (response) {
       // console.log('資料有回傳了');  
       // console.log(response.data.products);
@@ -45,7 +45,7 @@ function addCart(e) {
   // console.log(1);
 
   e.preventDefault();
-  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+  axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`)
     .then(function (response) {
       // 成功會回傳的內容
       // console.log(response.data.carts);
@@ -61,7 +61,7 @@ function addCart(e) {
       // console.log(e.target.dataset.id);
       if (cartObj[e.target.dataset.id] == undefined) {
         // console.log(685681)
-        axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+        axios.post(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`,
           {
             "data": {
               "productId": `${e.target.dataset.id}`,
@@ -82,7 +82,7 @@ function addCart(e) {
         // console.log(1234)
         // console.log(cartObj[e.target.dataset.id])
         let itemNum = cartObj[e.target.dataset.id];
-        axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+        axios.post(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`,
           {
             "data": {
               "productId": `${e.target.dataset.id}`,
@@ -119,7 +119,7 @@ const productSelect = document.getElementById("productSelect");
 productSelect.addEventListener("change", chgProduct, false)
 function chgProduct(e) {
   // console.log(e.target.value)
-  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/products`)
+  axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/products`)
     .then(function (response) {
       // console.log('資料有回傳了');  
       // console.log(response.data.products);
@@ -193,7 +193,7 @@ function chgProduct(e) {
 //取得購物車 顯示在畫面
 let cartItem = 0;
 function showShppingCar() {
-  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+  axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`)
     .then(function (response) {
       // 成功會回傳的內容
       // console.log(response.data.carts);
@@ -288,7 +288,7 @@ function deloneCart(e) {
   // console.log(1);
   e.preventDefault();
   // console.log(e.target.dataset.idClear);
-  axios.delete(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts/${e.target.dataset.idClear}`)
+  axios.delete(`${api_url}/api/livejs/v1/customer/${pathApi}/carts/${e.target.dataset.idClear}`)
     .then(function (response) {
       // 成功會回傳的內容
       // console.log(response.data)
@@ -309,13 +309,13 @@ function deloneCart(e) {
 function delAllCart(e) {
   e.preventDefault();
   //確認伺服器購物車資料
-  axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+  axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`)
     .then(function (response) {
       // console.log(response.data.carts.length)
       if (response.data.carts.length == 0) { alert("購物車內無任何資料!!") } else {
 
         //新增購物車訂單//刪除伺服器資料
-        axios.delete(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+        axios.delete(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`)
           .then(function (response) {
             // 成功會回傳的內容
             // console.log(response.data)
@@ -363,12 +363,12 @@ function addOrder(e) {
     alert("必填資料不得為空!!")
   } else {
     //確認伺服器購物車資料
-    axios.get(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`)
+    axios.get(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`)
       .then(function (response) {
         // console.log(response.data.carts.length)
         if (response.data.carts.length == 0) { alert("購物車內無任何資料!!") } else {
 
-          axios.post(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/orders
+          axios.post(`${api_url}/api/livejs/v1/customer/${pathApi}/orders
         `,
             {
               "data": {
@@ -417,7 +417,7 @@ function chgInputNumber(e) {
   const modiId = e.target.dataset.idModi;
   // console.log(modiId);
   // //修改伺服器資料
-  axios.patch(`https://hexschoollivejs.herokuapp.com/api/livejs/v1/customer/${pathApi}/carts`,
+  axios.patch(`${api_url}/api/livejs/v1/customer/${pathApi}/carts`,
   {
     "data": {
       "id": modiId,
